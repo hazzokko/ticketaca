@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+<!-- 	<settings> -->
+<!-- 		<setting name="mapUnderscoreToCamelCase" value="true" /> -->
+<!-- 	</settings> -->
+
+	<typeAliases>
+		<typeAlias type="com.ticketaca.sts.vo.AdminVO" alias="adminVO" />
+		<typeAlias type="com.ticketaca.sts.vo.ExhVO" alias="exhVO" />
+		<typeAlias type="com.ticketaca.sts.vo.OrderVO" alias="orderVO" />
+		<typeAlias type="com.ticketaca.sts.vo.QnaVO" alias="qnaVO" />
+		<typeAlias type="com.ticketaca.sts.vo.UserVO" alias="userVO" />
+		<typeAlias type="com.ticketaca.sts.vo.ZzimVO" alias="zzimVO" />
+		<typeAlias type="com.ticketaca.sts.vo.PagingVO" alias="pagingVO" />
+	</typeAliases>
+</configuration>
+
+

@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.ticketaca">
+	
+	<!-- @@@@ jcm @@@@ -->
+	<!-- user  -->
+	<select id="userLogin" resultType="userVO" parameterType="userVO">
+	<![CDATA[
+		SELECT * FROM users
+		WHERE userId=#{userId} AND userPw=#{userPw}		
+	]]>
+	</select>
+
+	<select id="duplicatedId" resultType="String" parameterType="userVO">
+	<![CDATA[
+		SELECT DECODE(COUNT(*),1,'true', 'false') AS result FROM users WHERE userId = #{userId}
+	]]>
+	</select>
+
+	<insert id="userSignUp" parameterType="userVO">
+		<![CDATA[
+		INSERT INTO users 
+		(userId, userPw, userName, userBirth, userTel, userEmail)
+		VALUES (#{userId},#{userPw},#{userName},#{userBirth},#{userTel},#{userEmail})
+		]]>
+	</insert>
+
+	<update id="userOut" parameterType="userVO"> 
+		<![CDATA[ 
+		update users set userOut='T' WHERE userId = #{userId} AND userPw = #{userPw}
+		]]>
+	</update>
+	
+	<update id="userUpdate" parameterType="userVO"> 
+		<![CDATA[ 
+		UPDATE users SET USERPW = #{userPw} , USERNAME = #{userName}, USERTEL = #{userTel}, USEREMAIL = #{userEmail} WHERE USERID = #{userId}
+		]]>
+	</update>
+	
+	<select id="userSelect" resultType="userVO">
+	<![CDATA[
+		SELECT * FROM users WHERE userId = #{userId}		
+	]]>
+	</select>
+	
+	<!-- zzim  -->
+	<select id="zzimList" resultType="zzimVO">
+	<![CDATA[
+		SELECT * FROM ZZIM z LEFT OUTER JOIN EXH e ON e.EXHNO = z.EXHNO WHERE z.USERID = #{userId} ORDER BY ZZDATE DESC
+	]]>
+	</select>
+	
+	<select id="zzimRemove" >
+	<![CDATA[
+		DELETE FROM ZZIM WHERE ZZNO = #{zzNo}
+	]]>
+	</select>
+
+	<!-- admin -->
+	<select id="adminLogin" resultType="adminVO" parameterType="adminVO">
+	<![CDATA[
+		SELECT * FROM admin
+		WHERE admId=#{admId} AND admPw=#{admPw}		
+	]]>
+	</select>
+	
+	<select id="adminUserList" resultType="userVO" >
+	<![CDATA[
+		SELECT * FROM users	
+	]]>
+	</select>
+	
+	<select id="adminUserSearchById" resultType="userVO" parameterType="String" >
+	<![CDATA[
+		 SELECT * FROM users
+         WHERE userId like '%' || #{keyword} || '%'
+	]]>
+	</select>
+	
+	<select id="adminUserSearchByName" resultType="userVO" parameterType="String" >
+	<![CDATA[
+		 select * from users
+         where
+         userName like '%' || #{keyword} || '%'		
+	]]>
+	</select>
+	
+	<select id="adminUserSearchByTel" resultType="userVO" parameterType="String" >
+	<![CDATA[
+		 select * from users
+         where
+         userTel like '%' || #{keyword} || '%'		
+	]]>
+	</select>
+	
+	<select id="adminUserSearchByEmail" resultType="userVO" parameterType="String" >
+	<![CDATA[
+		 select * from users
+         where
+         userEmail like '%' || #{keyword} || '%'	
+	]]>
+	</select>
+	
+	
+	
+	<!-- @@@@ hamel @@@@ -->
+	<!-- admin : orderAllList() -->
+	<select id="orderAllList" resultType="orderVO" >
+      <![CDATA[
+         SELECT * FROM ORDERS o 
+			LEFT OUTER JOIN USERS u 
+			ON u.userId = o.userId 
+			LEFT OUTER JOIN EXH e
+			ON e.exhNo = o.exhNo
+			ORDER BY ordDate DESC	 	
+      ]]>
+	</select>
+	<!-- user : Session getOrderList -->
+	<select id="getUserOrders" resultType="orderVO" parameterType="userVO">
+      <![CDATA[
+         SELECT * FROM ORDERS o
+			LEFT OUTER JOIN USERS u
+			ON u.userId = o.userId
+			LEFT OUTER JOIN EXH e
+			ON e.exhno = o.exhNo
+			WHERE u.userId = #{userId}  
+			ORDER BY ordDate DESC	 	
+      ]]>
+	</select>
+	<!-- user : orderDetail -->
+	<select id="getOrder" resultType="exhVO" parameterType="int">
+	<![CDATA[
+		SELECT exhNo, exhname, exhplace, exhaddress,
+		TO_CHAR(TO_DATE(exhstrdate, 'YYYY-MM-DD'), 'YYYY-MM-DD') 
+		AS exhstrdate, 
+		TO_CHAR(TO_DATE(exhenddate, 'YYYY-MM-DD'), 'YYYY-MM-DD') 
+		AS exhenddate,
+		exhaprice, exhyprice, exhcprice, exhthumbimg, exhdetailimg
+		FROM exh WHERE exhNo=#{exhNo}
+	]]>
+	</select>
+	<!-- user : add new Order -->
+	<insert id="newOrder" parameterType="orderVO">
+	<![CDATA[
+		INSERT INTO orders
+		(ordNo,exhNo,userId,ordPay,ordAQnt,ordYQnt,ordCQnt,ordPrice,
+		ordDate,seatNo,ordStatus)
+		values
+		(ord_seq.NEXTVAL,#{exhNo}, #{userId}, #{ordPay}, #{ordAQnt},
+		 #{ordYQnt}, #{ordCQnt}, #{ordPrice}, sysdate, #{seatNo}, 'T')
+	]]>
+	</insert>
+	<!-- admin : searchOrder/orderNo -->
+	<select id="searchOrderbyOrderNo" resultType="orderVO" parameterType="String" >
+	<![CDATA[
+		SELECT *
+		FROM ORDERS o
+		LEFT OUTER JOIN USERS u ON u.userId = o.userId
+		LEFT OUTER JOIN EXH e ON e.exhNo = o.exhNo
+		WHERE o.ordNo LIKE '%' || #{ordNo} || '%'
+		ORDER BY o.ordDate DESC		
+	]]>
+	</select>
+	<!-- admin : searchOrder/exhNo -->
+	<select id="searchOrderbyExhNo" resultType="orderVO" parameterType="String" >
+	<![CDATA[
+		 SELECT *
+		FROM ORDERS o
+		LEFT OUTER JOIN USERS u ON u.userId = o.userId
+		LEFT OUTER JOIN EXH e ON e.exhNo = o.exhNo
+		WHERE o.exhNo LIKE '%' || #{exhNo} || '%'
+		ORDER BY o.ordDate DESC		
+	]]>
+	</select>
+	<!-- admin : searchOrder/userId -->
+	<select id="searchOrderbyUserId" resultType="orderVO" parameterType="String" >
+	<![CDATA[
+		  SELECT *
+		FROM ORDERS o
+		LEFT OUTER JOIN USERS u ON u.userId = o.userId
+		LEFT OUTER JOIN EXH e ON e.exhNo = o.exhNo
+		WHERE o.userId LIKE '%' || #{userId} || '%'
+		ORDER BY o.ordDate DESC		
+	]]>
+	</select>
+	
+	<!-- 호준 -->
+	<!-- 관리자 qna 리스트 쿼리 -->
+	<select id="adminlistQna" resultType="qnaVO">
+		select * from qna 
+		where qnaPNo = 0
+		order by qnaDate 
+	</select>
+	
+	
+	<!-- 관리자 qna 상세보기 리스트 쿼리 -->
+	<select id="adminDetailQna" resultType="qnaVO" parameterType="int">
+		<![CDATA[
+			select * from qna
+			where qnaNo = #{qnaNo}
+		]]>
+	</select>
+	
+	<!-- 관리자 qna 상세보기의 답글 내용 쿼리 -->
+	<select id="selectPno" resultType="qnaVO" parameterType="int">
+		<![CDATA[
+			select qnaPNo,qnaContent from qna
+			where qnaPNo = #{qnaNo}
+		]]>
+	</select>
+	
+	<!-- 관리자 qna 답글 작성-->
+	<insert id="adminWriteQna" parameterType="qnaVO">
+		<![CDATA[
+			insert into QNA(QNANO, QNAPNO, QNACATE, QNATITLE, QNADATE, USERID, QNACONTENT,ADMANSWER) 
+			values (QNA_SEQ.NEXTVAL, #{qnaNo}, #{qnaCate}, #{qnaTitle}, SYSDATE, #{userId}, #{qnaContent},'T')
+		]]>
+	</insert>
+	
+	<!-- 관리자 qna 답글 작성하였을 때 답변완료 처리 -->
+	<update id="adminUpdateRead" parameterType="int">
+		<![CDATA[
+			update QNA set admAnswer = 'T' where qnaNo = #{qnaNo}
+		]]>
+	</update>
+	
+	<!-- 유저가 쓴 qna 리스트 출력 -->
+	<select id="userListQna" parameterType="String" resultType="qnaVO">
+		select LEVEL,QNANO,QNAPNO,QNATITLE,QNACONTENT,USERID,QNADATE,ADMANSWER
+			from qna where userId = #{userId}
+			START WITH QNAPNO=0
+			CONNECT BY PRIOR QNANO=QNAPNO
+			ORDER SIBLINGS BY QNANO DESC
+	</select>
+	
+	<!-- 유저 qna 글 insert -->
+	<insert id="userWriteQna" parameterType="qnaVO">
+		<![CDATA[
+			insert into qna(QNANO, QNAPNO, QNACATE, QNATITLE, QNADATE, USERID, QNACONTENT) 
+			values(qna_seq.nextval,0,#{qnaCate},#{qnaTitle},sysdate,#{userId},#{qnaContent})
+		]]>
+	</insert>
+	
+	<!-- 유저 qna 글 상세보기 -->
+	<select id="userDetailQna" parameterType="qnaVO" resultType="qnaVO">
+		<![CDATA[
+			select * 
+			from qna 
+			where qnaNO=#{qnaNo} and userid=#{userId}
+		]]>
+	</select>
+	
+	<!-- 유저 qna 질문 수정하기 -->
+	<update id="userModfiyQna" parameterType="qnaVO">
+		<![CDATA[
+			update QNA 
+			set qnaTitle = #{qnaTitle}, qnaContent = #{qnaContent}, qnaDate = SYSDATE
+			where qnaNo = #{qnaNo}
+		]]>
+		
+	</update>
+	
+	<!-- 유저 qna 질문에 대한 답변 -->
+	<select id="DetailContent" parameterType="qnaVO" resultType="qnaVO">
+		<![CDATA[
+			select qnaContent 
+			from qna
+			where qnaPNo = #{qnaNo}
+		]]>
+	</select>
+	
+	<!-- @@@@ 민지 @@@@ -->
+	
+	<select id="selectAllExhList" resultType="exhVO">
+      <![CDATA[
+         select * from exh	
+      ]]>
+	</select>
+	
+	<select id="selectExhListClosing" resultType="exhVO">
+      <![CDATA[
+         select * from exh 
+         where to_date(exhEndDate, 'YYYY-MM-DD') < TRUNC(sysdate) 
+         order by to_date(exhEndDate, 'YYYY-MM-DD') desc
+      ]]>
+	</select>
+	
+	<select id="selectExhListNearingDeadline" resultType="exhVO">
+      <![CDATA[
+         select * from exh 
+         where TRUNC(sysdate) <= to_date(exhEndDate, 'YYYY-MM-DD') 
+         	   AND to_date(exhEndDate, 'YYYY-MM-DD') < (TRUNC(sysdate)+7)
+         order by to_date(exhEndDate, 'YYYY-MM-DD')
+      ]]>
+	</select>
+	
+	<select id="selectExhListOngoing" resultType="exhVO">
+      <![CDATA[
+         select * from exh 
+         where to_date(exhStrDate, 'YYYY-MM-DD') <= TRUNC(sysdate)
+         	   AND TRUNC(sysdate) <= to_date(exhEndDate, 'YYYY-MM-DD')
+         order by to_date(exhStrDate, 'YYYY-MM-DD')
+      ]]>
+	</select>
+	
+	<select id="selectExhListUpcoming" resultType="exhVO">
+      <![CDATA[
+         select * from exh 
+         where TRUNC(sysdate) < to_date(exhStrDate, 'YYYY-MM-DD')
+         order by to_date(exhStrDate, 'YYYY-MM-DD')
+      ]]>
+	</select>
+	
+	<select id="selectOneExh" resultType="exhVO" parameterType="int">
+		<![CDATA[
+			select * from exh 
+			where exhNo = #{exhNo}
+		]]>		
+	</select>
+	
+	<select id="findMaxExhNo" parameterType="exhVO" resultType="int">
+		<![CDATA[
+			select max(exhNo) from exh
+		]]>
+	</select>
+	
+	<insert id="insertExh" parameterType="exhVO">
+		<![CDATA[
+			insert into exh (exhNo
+							, exhName
+							, exhPlace
+							, exhAddress
+							, exhStrDate
+							, exhEndDate
+							, exhAPrice
+							, exhYPrice
+							, exhCPrice
+							, exhContent
+							, exhCrrCnt
+							, exhMaxCnt
+							, exhAbleBuy
+							, exhPostStatus
+							, exhThumbImg
+							, exhDetailImg)
+			values(#{exhNo}
+				 , #{exhName}
+				 , #{exhPlace}
+				 , #{exhAddress}
+				 , #{exhStrDate}
+				 , #{exhEndDate}
+				 , #{exhAPrice}
+				 , #{exhYPrice}
+				 , #{exhCPrice}
+				 , #{exhContent}
+				 , 0
+				 , #{exhMaxCnt}
+				 , #{exhAbleBuy}
+				 , #{exhPostStatus}
+				 , #{exhThumbImg}
+				 , #{exhDetailImg})
+		]]>
+	</insert>
+	
+	<update id="updateExh" parameterType="exhVO">
+		<![CDATA[
+			update exh 
+			set exhName = #{exhName}
+						, exhPlace = #{exhPlace}
+						, exhAddress = #{exhAddress}
+						, exhStrDate = #{exhStrDate}
+						, exhEndDate = #{exhEndDate}
+						, exhAPrice = #{exhAPrice}
+						, exhYPrice = #{exhYPrice}
+						, exhCPrice = #{exhCPrice}
+						, exhContent = #{exhContent}
+						, exhMaxCnt = #{exhMaxCnt}
+						, exhAbleBuy = #{exhAbleBuy}
+						, exhPostStatus = #{exhPostStatus}
+						, exhThumbImg = #{exhThumbImg}
+						, exhDetailImg = #{exhDetailImg}
+			where exhNo = #{exhNo}			
+		]]>
+	</update>
+	
+	<delete id="deleteExh" parameterType="int">
+		<![CDATA[
+			delete from exh
+			where exhNo = #{exhNo}
+		]]>
+	</delete>
+</mapper>

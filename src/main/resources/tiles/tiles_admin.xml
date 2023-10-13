@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="adminBaseLayout" template="/WEB-INF/views/common/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header"
+			value="/WEB-INF/views/common/adminHeader.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer"
+			value="/WEB-INF/views/common/adminFooter.jsp" />
+	</definition>
+	<!-- @@@@ jcm @@@@ -->
+	<!-- 관리자 메인 -->
+	<definition name="/admin/main" extends="adminBaseLayout">
+		<put-attribute name="title" value="관리자 페이지" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/admins/adminMain.jsp" />
+	</definition>
+
+	<!-- 관리자 로그인 폼 -->
+	<definition name="/admin/loginForm" extends="adminBaseLayout">
+		<put-attribute name="title" value="관리자 페이지" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/admins/adminSign/login.jsp" />
+	</definition>
+
+	<!-- 유저관리페이지 -->
+	<definition name="/admin/user/list" extends="adminBaseLayout">
+		<put-attribute name="title" value="관리자 페이지" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/admins/userManage/userList.jsp" />
+	</definition>
+
+	<!-- 유저 검색결과 페이지 -->
+	<definition name="/admin/user/search" extends="adminBaseLayout">
+		<put-attribute name="title" value="관리자 페이지" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/admins/userManage/searchList.jsp" />
+	</definition>
+
+	<!-- @@@@ hamel @@@@ -->
+	<definition name="/order/orderAllList" extends="adminBaseLayout">
+		<put-attribute name="title" value="전체결제정보" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/admins/payManage/orderAllList.jsp" />
+	</definition>
+	
+	<!-- search order List -->
+	<definition name="/order/searchOrder" extends="adminBaseLayout">
+		<put-attribute name="title" value="전체결제정보" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/admins/payManage/orderSearchList.jsp" />
+	</definition>
+	
+	
+	<!-- 호준 -->
+	<!-- 호준 -관리자 qna 리스트  -->
+   <definition name="/qna/admin/adminlistQna" extends="adminBaseLayout">					  
+      <put-attribute name="title" value="qna 리스트" />				  
+      <put-attribute name="body" value="/WEB-INF/views/admins/qnaManage/adminlistQna.jsp" />   
+   </definition>
+   
+   <!-- 호준 -관리자 qna 상세보기 리스트 -->
+   <definition name="/qna/admin/admindetailQna" extends="adminBaseLayout">					  
+      <put-attribute name="title" value="qna 리스트" />				  
+      <put-attribute name="body" value="/WEB-INF/views/admins/qnaManage/adminlistOriginalQna.jsp" />   
+   </definition>
+   
+   <!-- 호준 -관리자 qna 답변 창 보내기 -->
+   <definition name="/qna/admin/adminWriteQnaForm" extends="adminBaseLayout">					  
+      <put-attribute name="title" value="qna 답변 " />				  
+      <put-attribute name="body" value="/WEB-INF/views/admins/qnaManage/admininsertWrite.jsp" />   
+   </definition>
+   
+   <!-- @@@민지 @@@ -->
+   <definition name="/admin/listExhs" extends="adminBaseLayout">
+      <put-attribute name="title" value="전체 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/admins/exhManage/listExhs.jsp" />
+   </definition>
+   
+   <definition name="/admin/listExhsClosing" extends="adminBaseLayout">
+      <put-attribute name="title" value="종료 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/admins/exhManage/listExhsClosing.jsp" />
+   </definition>
+   
+   <definition name="/admin/listExhsNearingDeadline" extends="adminBaseLayout">
+      <put-attribute name="title" value="종료 예정 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/admins/exhManage/listExhsNearingDeadline.jsp" />
+   </definition>
+   
+   <definition name="/admin/listExhsOngoing" extends="adminBaseLayout">
+      <put-attribute name="title" value="진행 중 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/admins/exhManage/listExhsOngoing.jsp" />
+   </definition>
+   
+   <definition name="/admin/listExhsUpcoming" extends="adminBaseLayout">
+      <put-attribute name="title" value="예정 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/admins/exhManage/listExhsUpcoming.jsp" />
+   </definition>
+   
+   <definition name="/admin/insertExh" extends="adminBaseLayout">
+      <put-attribute name="title" value="전시 정보 수정창" />
+      <put-attribute name="body" value="/WEB-INF/views/admins/exhManage/exhForm.jsp" />
+   </definition>
+   
+   <definition name="/admin/updateExh" extends="adminBaseLayout">
+      <put-attribute name="title" value="전시 정보 수정창" />
+      <put-attribute name="body" value="/WEB-INF/views/admins/exhManage/exhModForm.jsp" />
+   </definition>
+   
+   <definition name="/admin/detailExh" extends="adminBaseLayout">
+      <put-attribute name="title" value="전시 세부 정보창" />
+      <put-attribute name="body" value="/WEB-INF/views/admins/exhManage/exhDetail.jsp" />
+   </definition>  
+</tiles-definitions>

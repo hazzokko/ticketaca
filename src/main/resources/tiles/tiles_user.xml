@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="baseLayout" template="/WEB-INF/views/common/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+	</definition>
+	
+	<!-- @@@@ jcm @@@@ -->
+	<!-- jcm / user : 메인 페이지 -->
+	<definition name="main" extends="baseLayout">
+		<put-attribute name="title" value="메인페이지" />
+		<put-attribute name="body" value="/WEB-INF/views/userMain.jsp" />
+	</definition>
+	
+	<!-- jcm - user : 로그인 페이지 -->
+	<definition name="/user/loginForm" extends="baseLayout">
+		<put-attribute name="title" value="로그인" />
+		<put-attribute name="body" value="/WEB-INF/views/users/sign/login.jsp" />
+	</definition>
+
+	<!-- jcm - user : 회원가입 페이지 -->
+	<definition name="/user/signForm" extends="baseLayout">
+		<put-attribute name="title" value="회원가입" />
+		<put-attribute name="body" value="/WEB-INF/views/users/sign/sign.jsp" />
+	</definition>
+
+	<!-- jcm - user : 마이페이지 -->
+	<definition name="/user/myPage" extends="baseLayout">
+		<put-attribute name="title" value="마이페이지" />
+		<put-attribute name="body" value="/WEB-INF/views/users/mypage/myPage.jsp" />
+	</definition>
+	
+	<!-- jcm - user : 마이페이지의 수정페이지 -->
+	<definition name="/user/myPage/mod" extends="baseLayout">
+		<put-attribute name="title" value="내 정보 수정" />
+		<put-attribute name="body" value="/WEB-INF/views/users/mypage/myPageMod.jsp" />
+	</definition>
+
+	<!-- jcm - zzim : 찜 목록 페이지  -->
+	<definition name="/zzim/list" extends="baseLayout">
+		<put-attribute name="title" value="내 정보 수정" />
+		<put-attribute name="body" value="/WEB-INF/views/users/zzim/zzimList.jsp" />
+	</definition>
+	
+	<!-- hamel - 유저의 주문 내역 -->
+	<definition name="/order/userOrder" extends="baseLayout">
+		<put-attribute name="title" value="내 결제목록" />
+		<put-attribute name="body" value="/WEB-INF/views/users/pay/payList.jsp" />
+	</definition>
+	<!-- hamel - 유저의 주문하기 폼 -->
+	<definition name="/order/getOrder" extends="baseLayout">
+		<put-attribute name="title" value="내 결제목록" />
+		<put-attribute name="body" value="/WEB-INF/views/users/pay/payDetail.jsp" />
+	</definition>
+	<!-- hamel/jcm - 유저의 결제창 -->
+	<definition name="/order/payment" extends="baseLayout">
+		<put-attribute name="title" value="결제단계" />
+		<put-attribute name="body" value="/WEB-INF/views/users/pay/payment.jsp" />
+	</definition>
+	
+	<!-- 호준 -->
+	<definition name="/qna/user/userListQna" extends="baseLayout">		
+      <put-attribute name="title" value="qna 목록 창" />				  
+      <put-attribute name="body" value="/WEB-INF/views/users/qna/listQna.jsp" />  
+   </definition>
+   
+   <definition name="/qna/user/userWriteForm" extends="baseLayout">					  
+      <put-attribute name="title" value="qna 글쓰기 창" />				  
+      <put-attribute name="body" value="/WEB-INF/views/users/qna/writeQna.jsp" />   
+   </definition>
+   
+   <definition name="/qna/user/userDetailQna" extends="baseLayout">					  
+      <put-attribute name="title" value="qna 상세보기" />				  
+      <put-attribute name="body" value="/WEB-INF/views/users/qna/listOriginalQna.jsp" />   
+   </definition>
+   
+   <definition name="/qna/user/userModifyQnaFrom" extends="baseLayout">					  
+      <put-attribute name="title" value="qna 수정 창" />				  
+      <put-attribute name="body" value="/WEB-INF/views/users/qna/updateQna.jsp" />   
+   </definition>
+   
+   <!-- @@민지@@ -->
+    <definition name="/user/listExhs" extends="baseLayout">
+      <put-attribute name="title" value="전시목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/users/exh/listExhs.jsp" />
+   </definition>
+   
+   <definition name="/user/listExhsClosing" extends="baseLayout">
+      <put-attribute name="title" value="종료 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/users/exh/listExhsClosing.jsp" />
+   </definition>
+   
+   <definition name="/user/listExhsNearingDeadline" extends="baseLayout">
+      <put-attribute name="title" value="종료 예정 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/users/exh/listExhsNearingDeadline.jsp" />
+   </definition>
+   
+   <definition name="/user/listExhsOngoing" extends="baseLayout">
+      <put-attribute name="title" value="진행 중 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/users/exh/listExhsOngoing.jsp" />
+   </definition>
+   
+   <definition name="/user/listExhsUpcoming" extends="baseLayout">
+      <put-attribute name="title" value="예정 전시 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/users/exh/listExhsUpcoming.jsp" />
+   </definition>
+   
+   <definition name="/user/detailExh" extends="baseLayout">
+      <put-attribute name="title" value="전시 세부 정보창" />
+      <put-attribute name="body" value="/WEB-INF/views/users/exh/exhDetail.jsp" />
+   </definition>
+</tiles-definitions>
